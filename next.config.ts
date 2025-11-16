@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  reactCompiler:true,
   experimental: {
     turbopackFileSystemCacheForDev: true,
     /*Enable turbo pack file system cache for development to improve performance, 
