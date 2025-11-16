@@ -15,38 +15,36 @@ jobs:
         uses: actions/checkout@v4
 			- name: Setup Node.js
 				uses: actions/setup-node@v4
-				with:
-					node-version: '24'
-					cache: 'npm'
+			  with:
+				  node-version: '24'
+				  cache: 'npm'
 
-        - name: Install dependencies
-				run: npm install --prefer-offline --no-audit --progress=false
+      - name: Install dependencies
+			  run: npm install --prefer-offline --no-audit --progress=false
 
-			- name: Restore Next.js cache
-				uses: actions/cache@v4
-				with:
-					path: .next/cache
-					key: ${{ runner.os }}-next-cache-${{ hashFiles('**/package-lock.json', '**/yarn.lock', 'package.json') }}
-					restore-keys: |
+		  - name: Restore Next.js cache
+			  uses: actions/cache@v4
+			  with:
+				  path: .next/cache
+				  key: ${{ runner.os }}-next-cache-${{ hashFiles('**/package-lock.json', '**/yarn.lock', 'package.json') }}
+				  restore-keys: |
 						${{ runner.os }}-next-cache-
 
-			- name: Run ESLint
-				run: npm run lint
+		  - name: Run ESLint
+			  run: npm run lint
 
-			- name: Build Next.js
-				run: npm run build
+		  - name: Build Next.js
+			  run: npm run build
+		  - name: Cache .next build output (optional)
+			  uses: actions/cache@v4
+			  with:
+				  path: .next
+				  key: ${{ runner.os }}-next-build-${{ hashFiles('**/package-lock.json', '**/yarn.lock', 'package.json') }}
+				  restore-keys: |
+					  ${{ runner.os }}-next-build-
 
-			- name: Cache .next build output (optional)
-				uses: actions/cache@v4
-				with:
-					path: .next
-					key: ${{ runner.os }}-next-build-${{ hashFiles('**/package-lock.json', '**/yarn.lock', 'package.json') }}
-					restore-keys: |
-						${{ runner.os }}-next-build-
-
-			- name: Upload Next build artifact
-				uses: actions/upload-artifact@v4
-				with:
-					name: next-build
-					path: .next
-
+		  - name: Upload Next build artifact
+			  uses: actions/upload-artifact@v4
+			  with:
+				  name: next-build
+				  path: .next
