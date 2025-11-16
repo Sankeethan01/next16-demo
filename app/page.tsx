@@ -1,10 +1,15 @@
-const Home = () => {
-  console.log("What type of component am I?")
-  return (
-    <div className="text-6xl underline">
-      Welcome to Next 16
-    </div>
-  )
-}
+import Hello from "./components/hello";
 
-export default Home
+const Home = () => {
+  console.log("What type of component am I?");
+  return (
+    <main>
+      <div className="text-6xl underline">
+        Welcome to Next 16
+        <Hello />
+      </div>
+    </main>
+  );
+};
+
+export default Home;
