@@ -1,50 +1,52 @@
 name: CI PIPELINE FOR NEXT.JS 16 DEMO
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+	push:
+		branches: [ main ]
+	pull_request:
+		branches: [ main ]
 
 jobs:
-  build:
-    name: Build and test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-		  - name: Setup Node.js
-		    uses: actions/setup-node@v5
-			  with:
-				  node-version: '24'
-				  cache: 'npm'
+	build:
+		name: Build and test
+		runs-on: ubuntu-latest
+		steps:
+			- name: Checkout repository
+				uses: actions/checkout@v4
 
-      - name: Install dependencies
-			  run: npm install --prefer-offline --no-audit --progress=false
+			- name: Setup Node.js
+				uses: actions/setup-node@v4
+				with:
+					node-version: '20.9'
+					cache: 'npm'
 
-		  - name: Restore Next.js cache
-			  uses: actions/cache@v4
-			  with:
-				  path: .next/cache
-				  key: ${{ runner.os }}-next-cache-${{ hashFiles('**/package-lock.json', '**/yarn.lock', 'package.json') }}
-				  restore-keys: |
+			- name: Install dependencies
+				run: npm install --prefer-offline --no-audit --progress=false
+
+			- name: Restore Next.js cache
+				uses: actions/cache@v4
+				with:
+					path: .next/cache
+					key: ${{ runner.os }}-next-cache-${{ hashFiles('**/package-lock.json', '**/yarn.lock', 'package.json') }}
+					restore-keys: |
 						${{ runner.os }}-next-cache-
 
-		  - name: Run ESLint
-			  run: npm run lint
+			- name: Run ESLint
+				run: npm run lint
 
-		  - name: Build Next.js
-			  run: npm run build
-		  - name: Cache .next build output (optional)
-			  uses: actions/cache@v4
-			  with:
-				  path: .next
-				  key: ${{ runner.os }}-next-build-${{ hashFiles('**/package-lock.json', '**/yarn.lock', 'package.json') }}
-				  restore-keys: |
-					  ${{ runner.os }}-next-build-
+			- name: Build Next.js
+				run: npm run build
 
-		  - name: Upload Next build artifact
-			  uses: actions/upload-artifact@v4
-			  with:
-				  name: next-build
-				  path: .next
+			- name: Cache .next build output (optional)
+				uses: actions/cache@v4
+				with:
+					path: .next
+					key: ${{ runner.os }}-next-build-${{ hashFiles('**/package-lock.json', '**/yarn.lock', 'package.json') }}
+					restore-keys: |
+						${{ runner.os }}-next-build-
+
+			- name: Upload Next build artifact
+				uses: actions/upload-artifact@v4
+				with:
+					name: next-build
+					path: .next
